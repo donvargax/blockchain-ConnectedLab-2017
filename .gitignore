@@ -83,3 +83,5 @@ build
 dist
 
 environments/development/contracts/*.sol.js
+
+.idea

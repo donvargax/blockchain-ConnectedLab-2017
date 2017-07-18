@@ -8,6 +8,9 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
+import Sidebar from "react-sidebar";
+
+import SidebarContent from "./components/SidebarContent";
 
 class App extends Component {
   constructor(props) {
@@ -23,18 +26,16 @@ class App extends Component {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
 
-    getWeb3
-      .then(results => {
-        this.setState({
-          web3: results.web3
-        })
+    getWeb3.then(results => {
+      this.setState({
+        web3: results.web3
+      })
 
-        // Instantiate contract once web3 provided.
-        this.instantiateContract()
-      })
-      .catch(() => {
-        console.log('Error finding web3.')
-      })
+      // Instantiate contract once web3 provided.
+      this.instantiateContract()
+    }).catch(() => {
+      console.log('Error finding web3.')
+    })
   }
 
   instantiateContract() {
@@ -52,6 +53,7 @@ class App extends Component {
     // Declaring this for later so we can chain functions on SimpleStorage.
     var simpleStorageInstance
 
+    /*
     // Get accounts.
     this.state.web3.eth.getAccounts((error, accounts) => {
       simpleStorage.deployed().then((instance) => {
@@ -67,43 +69,29 @@ class App extends Component {
         return this.setState({storageValue: result.c[0]})
       })
     })
-    /*
-     var exampleEvent = exampleContract.ReturnValue({_from: web3.eth.coinbase});
-     exampleEvent.watch(function(err, result) {
-     if (err) {
-     console.log(err)
-     return;
-     }
-     console.log(result.args._value)
-     // check that result.args._from is web3.eth.coinbase then
-     // display result.args._value in the UI and call
-     // exampleEvent.stopWatching()
-     })
-     */
+    */
   }
 
   render() {
+    var sidebarContent = <SidebarContent/>
     return (
       <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-          <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
-        </nav>
+        <Sidebar className="navbar pure-menu pure-menu-vertical" sidebar={sidebarContent} docked={true}>
+          <main className="container">
+            <div className="pure-g">
+              <div className="pure-u-1-1">
+                <Workflow2 id="wf"/>
 
-        <main className="container">
-          <div className="pure-g">
-            <div className="pure-u-1-1">
-              <Workflow2 id="wf"/>
-
-              <h1>Good to Go!</h1>
-              <p>Your Truffle Box is installed and ready.</p>
-              <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by
-                default).</p>
-              <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-              <p>The stored value is: {this.state.storageValue}</p>
+                <h1>Good to Go!</h1>
+                <p>Your Truffle Box is installed and ready.</p>
+                <h2>Smart Contract Example</h2>
+                <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
+                <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
+                <p>The stored value is: {this.state.storageValue}</p>
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </Sidebar>
       </div>
     );
   }
