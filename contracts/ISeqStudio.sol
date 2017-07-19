@@ -6,7 +6,7 @@ contract ISeqStudio {
   function generateReport(string _deviceId);
   function getFileIds() returns (string);
 
-  event TriggerAnalysis(string fileIds);
-  event TriggerReportGeneration(string deviceId);
-  event SampleFilesAvailable(string deviceId, string injectionId, string status, string fileIds);
+  event TriggerAnalysis(string fileIds, uint256 time);
+  event TriggerReportGeneration(string deviceId, uint256 time);
+  event SampleFilesAvailable(string deviceId, string injectionId, string status, string fileIds, uint256 time);
 }

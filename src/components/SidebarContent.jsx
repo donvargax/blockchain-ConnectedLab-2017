@@ -69,8 +69,7 @@ export default class extends Component {
     this.state.allEvents.map((event, key) => {
       events.push(
         <a href="#" className="pure-menu-link" key={key}>
-          {/*{event.event} - <Moment format="LLL" unix>{event.args.time.toNumber()}</Moment>*/}
-          {event.event} - {event.address}
+          {event.event} - <Moment format="LLL" unix>{event.args.time.toNumber()}</Moment>
         </a>
       )
     })

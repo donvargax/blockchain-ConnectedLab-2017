@@ -21,7 +21,8 @@ export default class WebApi {
   }
 
   getSeqStudioContractInstance() {
-    return this.iseqStudioContract.at("0xeb939a297e50e414453cfedbf42ee48acc21a04e")
+    return this.iseqStudioContract.at("0x771aa8066fe9f84eaee96d4687ec8d6379d1dc19")
+    // return this.iseqStudioContract.at("0xeb939a297e50e414453cfedbf42ee48acc21a04e")
     // return this.seqStudioContract.deployed()
   }
 }
