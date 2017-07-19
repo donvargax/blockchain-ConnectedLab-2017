@@ -5,33 +5,17 @@ import {PlusButton} from 'react-svg-buttons';
 import getWeb3 from '../utils/getWeb3'
 
 import SeqStudio from '../../build/contracts/ISeqStudio.json'
+import WebApi from "../utils/WebApi";
 
 export default class extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      web3: null,
-    }
-  }
-
-  componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-    getWeb3.then(results => {
-      this.setState({
-        web3: results.web3,
-      })
-    }).catch(() => {
-      console.log('Error finding web3.')
-    })
+    this.webApi = new WebApi()
   }
 
   handleRunClick = (e) => {
-    const contract = require('truffle-contract')
-    const seqStudioContract = contract(SeqStudio)
-    seqStudioContract.setProvider(this.state.web3.currentProvider)
-    return this.state.web3.eth.getAccounts((error, accounts) => {
-      seqStudioContract.at("0xeb939a297e50e414453cfedbf42ee48acc21a04e").then((instance) => {
+    return this.webApi.getAccounts((error, accounts) => {
+      this.webApi.getSeqStudioContractInstance().then((instance) => {
         let seqStudioInstance = instance
 
         return seqStudioInstance.setSampleFileId("89", "good", "15", "12345,67890", {from: accounts[0]})
@@ -40,14 +24,21 @@ export default class extends Component {
   }
 
   handleAnalyzeClick = (e) => {
-    const contract = require('truffle-contract')
-    const seqStudioContract = contract(SeqStudio)
-    seqStudioContract.setProvider(this.state.web3.currentProvider)
-    return this.state.web3.eth.getAccounts((error, accounts) => {
-      seqStudioContract.deployed().then((instance) => {
+    return this.webApi.getAccounts((error, accounts) => {
+      this.webApi.getSeqStudioContractInstance().then((instance) => {
         let seqStudioInstance = instance
 
         return seqStudioInstance.analyze("89", "good", "15", "12345,67890", {from: accounts[0]})
+      })
+    })
+  }
+
+  handleReportClick = (e) => {
+    return this.webApi.getAccounts((error, accounts) => {
+      this.webApi.getSeqStudioContractInstance().then((instance) => {
+        let seqStudioInstance = instance
+
+        return seqStudioInstance.generateReport("89", "good", "15", "12345,67890", {from: accounts[0]})
       })
     })
   }
@@ -57,6 +48,7 @@ export default class extends Component {
       <div>
         <PlusButton onClick={this.handleRunClick} /> Add "Run Start" event
         <PlusButton onClick={this.handleAnalyzeClick} /> Add "Analyze" event
+        <PlusButton onClick={this.handleReportClick} /> Add "Report" event
       </div>
     )
   }

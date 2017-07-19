@@ -10,10 +10,13 @@ export default class WebApi {
     let provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545')
     this.web3 = new Web3(provider)
 
-    this.iseqStudioContract = contract(ISeqStudio)
-    this.iseqStudioContract.setProvider(this.web3.currentProvider)
-    this.seqStudioContract = contract(SeqStudio)
-    this.seqStudioContract.setProvider(this.web3.currentProvider)
+    if (process.env.NODE_ENV === 'development') {
+      this.seqStudioContract = contract(SeqStudio)
+      this.seqStudioContract.setProvider(this.web3.currentProvider)
+    } else {
+      this.iseqStudioContract = contract(ISeqStudio)
+      this.iseqStudioContract.setProvider(this.web3.currentProvider)
+    }
   }
 
   getAccounts(callback) {
@@ -21,8 +24,10 @@ export default class WebApi {
   }
 
   getSeqStudioContractInstance() {
+    if (process.env.NODE_ENV === 'development') {
+      return this.seqStudioContract.deployed()
+    }
     return this.iseqStudioContract.at("0x771aa8066fe9f84eaee96d4687ec8d6379d1dc19")
     // return this.iseqStudioContract.at("0xeb939a297e50e414453cfedbf42ee48acc21a04e")
-    // return this.seqStudioContract.deployed()
   }
 }

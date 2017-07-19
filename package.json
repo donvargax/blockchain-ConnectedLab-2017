@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@types/react": "^15.0.38",
+    "@types/react-redux": "^4.4.46",
     "autoprefixer": "6.5.1",
     "babel-core": "6.17.0",
     "babel-eslint": "7.1.1",
@@ -39,6 +41,7 @@
     "promise": "7.1.1",
     "react-dev-utils": "^0.4.2",
     "recursive-readdir": "2.1.0",
+    "redux-devtools": "^3.4.0",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "truffle-contract": "^1.1.8",
@@ -62,9 +65,11 @@
     "react-moment": "^0.6.0",
     "react-popover": "^0.4.14",
     "react-popup": "^0.8.0",
+    "react-vis-force": "^0.3.1",
+    "react-redux": "^5.0.5",
     "react-sidebar": "^2.3.2",
     "react-svg-buttons": "^0.3.1",
-    "react-vis-force": "^0.3.1",
+    "redux": "^3.7.2",
     "storm-react-diagrams": "^2.4.9"
   },
   "scripts": {

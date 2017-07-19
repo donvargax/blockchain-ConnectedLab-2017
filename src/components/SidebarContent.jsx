@@ -16,6 +16,8 @@ export default class extends Component {
     this.instantiateContract()
   }
 
+  // TODO: we're the all seeing eye
+  /*
   componentDidMount() {
     // Instantiate contract once web3 provided.
     // TODO: stop watching somewhere else
@@ -23,6 +25,7 @@ export default class extends Component {
       this.seqStudioEventAll.stopWatching()
     }
   }
+  */
 
   instantiateContract() {
     var seqStudioInstance

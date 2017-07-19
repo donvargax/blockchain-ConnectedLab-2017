@@ -1,7 +1,7 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
 // import * as RJD from "react-js-diagrams/dist/main";
-import * as SRD from "storm-react-diagrams/dist/main";
+import SRD from "storm-react-diagrams";
 // import '../test.scss';
 
 import ReactDom from 'react-dom';
