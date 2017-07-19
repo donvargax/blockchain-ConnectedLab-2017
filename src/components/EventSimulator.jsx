@@ -4,7 +4,7 @@ import {PlusButton} from 'react-svg-buttons';
 
 import getWeb3 from '../utils/getWeb3'
 
-import SeqStudio from '../../build/contracts/SeqStudio.json'
+import SeqStudio from '../../build/contracts/ISeqStudio.json'
 
 export default class extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class extends Component {
     const seqStudioContract = contract(SeqStudio)
     seqStudioContract.setProvider(this.state.web3.currentProvider)
     return this.state.web3.eth.getAccounts((error, accounts) => {
-      seqStudioContract.deployed().then((instance) => {
+      seqStudioContract.at("0xeb939a297e50e414453cfedbf42ee48acc21a04e").then((instance) => {
         let seqStudioInstance = instance
 
         return seqStudioInstance.setSampleFileId("89", "good", "15", "12345,67890", {from: accounts[0]})
@@ -55,7 +55,7 @@ export default class extends Component {
   render() {
     return (
       <div>
-          <PlusButton onClick={this.handleRunClick} /> Add "Run Start" event
+        <PlusButton onClick={this.handleRunClick} /> Add "Run Start" event
         <PlusButton onClick={this.handleAnalyzeClick} /> Add "Analyze" event
       </div>
     )

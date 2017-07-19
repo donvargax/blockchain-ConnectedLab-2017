@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 
 import Moment from 'react-moment';
 
-import getWeb3 from '../utils/getWeb3'
-
-import SeqStudio from '../../build/contracts/SeqStudio.json'
+import WebApi from "../utils/WebApi";
 
 export default class extends Component {
   constructor(props) {
@@ -14,18 +12,8 @@ export default class extends Component {
       allEvents: []
     }
     this.allEvents = [];
-  }
-  componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-    getWeb3.then(results => {
-      this.setState({
-        web3: results.web3
-      })
-      this.instantiateContract()
-    }).catch(() => {
-      console.log('Error finding web3.')
-    })
+    this.webApi = new WebApi()
+    this.instantiateContract()
   }
 
   componentDidMount() {
@@ -37,18 +25,16 @@ export default class extends Component {
   }
 
   instantiateContract() {
-    const contract = require('truffle-contract')
-    const seqStudioContract = contract(SeqStudio)
-    seqStudioContract.setProvider(this.state.web3.currentProvider)
-
     var seqStudioInstance
 
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      seqStudioContract.deployed().then((instance) => {
+    this.webApi.getAccounts((error, accounts) => {
+      console.log(accounts);
+      this.webApi.getSeqStudioContractInstance().then((instance) => {
+        console.log(instance)
         seqStudioInstance = instance
 
-        this.seqStudioRunStartEvent = seqStudioInstance.RunStart({starter: accounts[0]},
-            {fromBlock: 0, toBlock: 'latest'})
+        // this.seqStudioRunStartEvent = seqStudioInstance.RunStart({starter: accounts[0]},
+        //     {fromBlock: 0, toBlock: 'latest'})
         this.seqStudioEventAll = seqStudioInstance.allEvents(
           {address: accounts[0], fromBlock: 0, toBlock: 'latest'})
 
@@ -72,17 +58,19 @@ export default class extends Component {
           this.setState({ allEvents: this.allEvents })
         })
       }).catch(error => {
-        alert(error);
+        console.log(error);
       })
     })
   }
 
   render() {
     let events = []
+    console.log(this.state.allEvents);
     this.state.allEvents.map((event, key) => {
       events.push(
         <a href="#" className="pure-menu-link" key={key}>
-          {event.event} - <Moment format="LLL" unix>{event.args.time.toNumber()}</Moment>
+          {/*{event.event} - <Moment format="LLL" unix>{event.args.time.toNumber()}</Moment>*/}
+          {event.event} - {event.address}
         </a>
       )
     })

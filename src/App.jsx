@@ -80,7 +80,7 @@ class App extends Component {
             <Sidebar className="navbar pure-menu pure-menu-vertical" sidebar={sidebarContent} docked={true} pullRight={true}>
               <main className="container">
                   <MainContent />
-                  <EventSimulator />
+                  {/*<EventSimulator />*/}
               </main>
             </Sidebar>
       </div>
