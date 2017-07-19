@@ -1,4 +1,7 @@
 /* PAGE */
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+@import "~storm-react-diagrams/dist/style.css";
+@import "./css/popup.css";
 
 body,
 .pure-g [class*=pure-u] {
@@ -65,4 +68,23 @@ code {
 .navbar .uport-logo {
   height: 16px;
   margin-right: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+Workflow
+ */
+.storm-diagrams-canvas {
+  height: 250px;
+}
+
+.name {
+  font-size: 20px;
+}
+
+.fa-close {
+  display: none;
 }

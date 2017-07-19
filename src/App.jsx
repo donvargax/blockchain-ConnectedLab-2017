@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
+import Workflow2 from "./components/workflow2.component";
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
+
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       storageValue: 0,
@@ -22,17 +24,17 @@ class App extends Component {
     // See utils/getWeb3 for more info.
 
     getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
-      })
+      .then(results => {
+        this.setState({
+          web3: results.web3
+        })
 
-      // Instantiate contract once web3 provided.
-      this.instantiateContract()
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
+        // Instantiate contract once web3 provided.
+        this.instantiateContract()
+      })
+      .catch(() => {
+        console.log('Error finding web3.')
+      })
   }
 
   instantiateContract() {
@@ -62,38 +64,41 @@ class App extends Component {
         return simpleStorageInstance.get.call(accounts[0])
       }).then((result) => {
         // Update state with the result.
-        return this.setState({ storageValue: result.c[0] })
+        return this.setState({storageValue: result.c[0]})
       })
     })
     /*
-    var exampleEvent = exampleContract.ReturnValue({_from: web3.eth.coinbase});
-exampleEvent.watch(function(err, result) {
-  if (err) {
-    console.log(err)
-    return;
-  }
-  console.log(result.args._value)
-  // check that result.args._from is web3.eth.coinbase then
-  // display result.args._value in the UI and call    
-  // exampleEvent.stopWatching()
-})
-*/
+     var exampleEvent = exampleContract.ReturnValue({_from: web3.eth.coinbase});
+     exampleEvent.watch(function(err, result) {
+     if (err) {
+     console.log(err)
+     return;
+     }
+     console.log(result.args._value)
+     // check that result.args._from is web3.eth.coinbase then
+     // display result.args._value in the UI and call
+     // exampleEvent.stopWatching()
+     })
+     */
   }
 
   render() {
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
-            <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
+          <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
         </nav>
 
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
+              <Workflow2 id="wf"/>
+
               <h1>Good to Go!</h1>
               <p>Your Truffle Box is installed and ready.</p>
               <h2>Smart Contract Example</h2>
-              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
+              <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by
+                default).</p>
               <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
               <p>The stored value is: {this.state.storageValue}</p>
             </div>
