@@ -1,91 +1,69 @@
 import React, {Component} from 'react'
-import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
-import getWeb3 from './utils/getWeb3'
+import {connect} from 'react-redux'
+import {addRun} from './actions'
 
 import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-import Sidebar from "react-sidebar";
-
-import SidebarContent from "./components/SidebarContent";
-import MainContent from "./components/MainContent";
+import WebApi from "./utils/WebApi"
+import VisibleRunList from "./containers/VisibleRunList";
 import EventSimulator from "./components/EventSimulator";
+import {addEventToRun} from "./actions";
 
 class App extends Component {
+
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = {
-      storageValue: 0,
-      web3: null
-    }
-  }
+    this.runs = 0
+    this.webApi = new WebApi()
 
-  componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
+    var seqStudioInstance
 
-    getWeb3.then(results => {
-      this.setState({
-        web3: results.web3
-      })
+    this.webApi.getAccounts((error, accounts) => {
+      console.log(accounts);
+      this.webApi.getSeqStudioContractInstance().then((instance) => {
+        console.log(instance)
+        seqStudioInstance = instance
 
-      // Instantiate contract once web3 provided.
-      this.instantiateContract()
-    }).catch(() => {
-      console.log('Error finding web3.')
-    })
-  }
+        this.seqStudioEventAll = seqStudioInstance.allEvents(
+          {address: accounts[0], fromBlock: 0, toBlock: 'latest'})
 
-  instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
+        this.seqStudioEventAll.watch((error, result) => {
+          if (error) {
+            console.log(error)
+            return
+          }
 
-    const contract = require('truffle-contract')
-    const simpleStorage = contract(SimpleStorageContract)
-    simpleStorage.setProvider(this.state.web3.currentProvider)
-
-    // Declaring this for later so we can chain functions on SimpleStorage.
-    var simpleStorageInstance
-
-    /*
-    // Get accounts.
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      simpleStorage.deployed().then((instance) => {
-        simpleStorageInstance = instance
-
-        // Stores a given value, 5 by default.
-        return simpleStorageInstance.set(5, {from: accounts[0]})
-      }).then((result) => {
-        // Get the value from the contract to prove it worked.
-        return simpleStorageInstance.get.call(accounts[0])
-      }).then((result) => {
-        // Update state with the result.
-        return this.setState({storageValue: result.c[0]})
+          if (result.event === "SampleFilesAvailable") {
+            props.dispatch(addRun({id: this.runs, title: `Run ${this.runs}`, status: 'in progress', events: []}))
+          }
+          props.dispatch(addEventToRun(this.runs, result))
+          if (result.event === "TriggerReportGeneration") {
+            this.runs++
+          }
+          // } else {
+          //   props.dispatch(addRun(result))
+          // }
+        })
+      }).catch(error => {
+        console.log(error);
       })
     })
-    */
   }
 
   render() {
-    var sidebarContent = <SidebarContent/>
     return (
       <div className="App">
-            <Sidebar className="navbar pure-menu pure-menu-vertical" sidebar={sidebarContent} docked={true} pullRight={true}>
-              <main className="container">
-                  <MainContent />
-                  <EventSimulator />
-              </main>
-            </Sidebar>
+        <main className="container">
+          <VisibleRunList />
+          <EventSimulator />
+        </main>
       </div>
     );
   }
 }
 
-export default App
+export default connect()(App)

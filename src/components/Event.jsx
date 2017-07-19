@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 
 import {Moment} from "react-moment";
 
-const Event = ({ onClick, event, args }) => {
+const Event = ({ onClick, event, args }) => (
   <li onClick={onClick} className="pure-menu-link">
-    {event} - <Moment format="LLL" unix>{args.time.toNumber()}</Moment>
+    {event} - {args.time.toNumber()}
   </li>
-}
+)
 
 Event.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   event: PropTypes.string.isRequired,
   args: PropTypes.shape({
-    time: PropTypes.number.isRequired
+    time: PropTypes.object.isRequired
   }),
 }
 

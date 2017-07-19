@@ -7,7 +7,10 @@ import appreducer from './reducers'
 
 import App from './App'
 
-let store = createStore(appreducer)
+let store = createStore(appreducer, {
+  events: [],
+  runs: []
+})
 
 ReactDOM.render(
   <Provider store={store}>
