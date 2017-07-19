@@ -27,6 +27,16 @@ class Step {
     this.linkBackwards = null;
   }
 
+  setWaiting() {
+    if (this.linkBackwards) {
+      this.linkBackwards.selected = false;
+      this.linkBackwards.isActive = false;
+    }
+    this.node.color = this.grey;
+    this.node.isInProgress = false;
+    this.node.isComplete = false;
+  }
+
   setInProgress() {
     if (this.linkBackwards) {
       this.linkBackwards.selected = true;
@@ -50,6 +60,8 @@ class Step {
 class Workflow2 extends React.Component {
 
   grey = 'rgb(128, 128, 128)';
+  green = 'rgb(124, 252, 0)';
+  blue = 'rgb(0, 192, 255)';
 
   constructor(props) {
     super(props);
@@ -66,7 +78,7 @@ class Workflow2 extends React.Component {
 
     this.steps = [];
 
-    Popup.registerPlugin('popover', function (content, target) {
+    Popup.registerPlugin('popover', function (content, color, target) {
       console.log("Creating popover");
 
       const Message = React.createClass({
@@ -99,7 +111,9 @@ class Workflow2 extends React.Component {
           // box.style.width = 50%;
           box.style.margin = 0;
           box.style.opacity = 1;
-          console.log("Finishing up positioning");
+          box.style.background = color;
+          // box.style.backgroundColor = "#00c0ff";
+          // console.log("Finishing up positioning");
         }
       });
     });
@@ -115,7 +129,7 @@ class Workflow2 extends React.Component {
     node.addListener({
       selectionChanged: (node, isSelected) => {
         if (isSelected) {
-          console.log("Workflow2: node id=", node.getID());
+          // console.log("Workflow2: node id=", node.getID());
           this.displayDetailedInformation(node);
         }
       }
@@ -124,31 +138,38 @@ class Workflow2 extends React.Component {
   }
 
   displayDetailedInformation(node) {
-    console.log("Node clicked");
+    // console.log("Node clicked");
     let message = "<h3>";
-    console.log(node.isInProgress);
+    // console.log(node.isInProgress);
+    let color = this.grey;
     if (node.isInProgress) {
-      message += "Status: In progress"
+      message += "Status: In progress";
       message +=
         "<h2>Tx:<br>" +
+        "Previous Tx:<br>" +
         "Date:<br>" +
         "Owner:<br>";
+      color = this.blue;
     } else if (node.isComplete) {
+      message += "Status: Completed";
       message +=
-        "<h2>Tx: abc123<br>" +
+        "<h2>Tx: abcdef<br>" +
+        "Previous Tx:123456<br>" +
         "Date: 12/34/56<br>" +
         "Owner: John Doe<br>";
+      color = this.green;
     } else {
       message += "Status: Waiting to Run";
       message +=
         "<h2>Tx:<br>" +
+        "Previous Tx:<br>" +
         "Date:<br>" +
         "Owner:<br>";
     }
 
 
     message += "</h2>";
-    Popup.plugins().popover(message, document.getElementById('popup-placeholder'));
+    Popup.plugins().popover(message, color, document.getElementById('popup-placeholder'));
   }
 
   createPort(node, options) {
@@ -203,6 +224,42 @@ class Workflow2 extends React.Component {
     return step;
   }
 
+  setStep(idx) {
+    this.steps.forEach((step) => {
+      step.setWaiting();
+    });
+
+    // mark all previous steps as complete
+    const completedNames = [];
+    for (let i = 0; i < idx; i++) {
+      // console.log("Setting complete, idx=", i);
+      const step = this.steps[i];
+      completedNames.push(step.node.name);
+    }
+    // console.log("completed names=", completedNames);
+
+    this.steps.forEach((step) => {
+      const name = step.node.name.trim();
+      // console.log("checking for completion name, name='"+ name +"'");
+      if (completedNames.includes(name)) {
+        // console.log("Marking complete");
+        step.setComplete();
+      }
+    });
+
+    // mark this step as in progress
+    // console.log("Setting in progress, idx=", idx);
+    const maxSteps = this.steps.length / 2;   // bad hack here because there are duplicated nodes?!?
+    if (idx < maxSteps && idx >= 0) {
+      const inProgressName = this.steps[idx].node.name;
+      this.steps.forEach((step) => {
+        if (step.node.name === inProgressName) {
+          step.setInProgress();
+        }
+      });
+    }
+  }
+
   render() {
     console.log("Workflow2: Running render()");
 
@@ -246,15 +303,14 @@ class Workflow2 extends React.Component {
     this.linkSteps(step3, step4);
     this.linkSteps(step4, step5);
 
-    console.log("Workflow2: nodes=", model.getNodes());
-    console.log("Workflow2: links=", model.getLinks());
+    // console.log("Workflow2: nodes=", model.getNodes());
+    // console.log("Workflow2: links=", model.getLinks());
 
-    step1.setComplete();
-    step2.setInProgress();
+    this.setStep(5);
     // this.next();
 
-    model.setLocked(true);
-    engine.setLocked(true);
+    // model.setLocked(true);
+    // engine.setLocked(true);
 
     engine.setDiagramModel(model);
 
