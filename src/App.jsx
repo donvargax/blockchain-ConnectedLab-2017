@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import SimpleStorageContract from '../build/contracts/SimpleStorage.json'
 import getWeb3 from './utils/getWeb3'
-import Workflow2 from "./components/workflow2.component";
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -11,6 +10,8 @@ import './App.css'
 import Sidebar from "react-sidebar";
 
 import SidebarContent from "./components/SidebarContent";
+import MainContent from "./components/MainContent";
+import EventSimulator from "./components/EventSimulator";
 
 class App extends Component {
   constructor(props) {
@@ -76,22 +77,12 @@ class App extends Component {
     var sidebarContent = <SidebarContent/>
     return (
       <div className="App">
-        <Sidebar className="navbar pure-menu pure-menu-vertical" sidebar={sidebarContent} docked={true}>
-          <main className="container">
-            <div className="pure-g">
-              <div className="pure-u-1-1">
-                <Workflow2 id="wf"/>
-
-                <h1>Good to Go!</h1>
-                <p>Your Truffle Box is installed and ready.</p>
-                <h2>Smart Contract Example</h2>
-                <p>If your contracts compiled and migrated successfully, below will show a stored value of 5 (by default).</p>
-                <p>Try changing the value stored on <strong>line 59</strong> of App.js.</p>
-                <p>The stored value is: {this.state.storageValue}</p>
-              </div>
-            </div>
-          </main>
-        </Sidebar>
+            <Sidebar className="navbar pure-menu pure-menu-vertical" sidebar={sidebarContent} docked={true} pullRight={true}>
+              <main className="container">
+                  <MainContent />
+                  <EventSimulator />
+              </main>
+            </Sidebar>
       </div>
     );
   }

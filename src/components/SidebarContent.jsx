@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Moment from 'react-moment';
+
 import getWeb3 from '../utils/getWeb3'
 
 import SeqStudio from '../../build/contracts/SeqStudio.json'
@@ -28,101 +30,65 @@ export default class extends Component {
 
   componentDidMount() {
     // Instantiate contract once web3 provided.
+    // TODO: stop watching somewhere else
     if (this.seqStudioEventAll) {
       this.seqStudioEventAll.stopWatching()
     }
   }
 
-
   instantiateContract() {
-    /*
-     * SMART CONTRACT EXAMPLE
-     *
-     * Normally these functions would be called in the context of a
-     * state management library, but for convenience I've placed them here.
-     */
-
     const contract = require('truffle-contract')
     const seqStudioContract = contract(SeqStudio)
     seqStudioContract.setProvider(this.state.web3.currentProvider)
 
-    // var seqStudioEventAll = seqStudioContract.RunAll
-
     var seqStudioInstance
 
     this.state.web3.eth.getAccounts((error, accounts) => {
-      console.log("accounts", accounts)
       seqStudioContract.deployed().then((instance) => {
         seqStudioInstance = instance
 
-        console.log(seqStudioInstance)
-        seqStudioInstance.setSampleFileId("89", "good", "15", "12345,67890", {from: accounts[0]})
-        seqStudioInstance.setSampleFileId("89", "good", "15", "12345,67890", {from: accounts[0]})
-        return seqStudioInstance.setSampleFileId("89", "good", "15", "12345,67890", {from: accounts[0]})
-      }).then((result) => {
-        console.log(accounts[0])
         this.seqStudioRunStartEvent = seqStudioInstance.RunStart({starter: accounts[0]},
             {fromBlock: 0, toBlock: 'latest'})
         this.seqStudioEventAll = seqStudioInstance.allEvents(
           {address: accounts[0], fromBlock: 0, toBlock: 'latest'})
 
-        console.log("fit");
-        console.log("RunStart", this.seqStudioRunStartEvent);
-        console.log(this.seqStudioEventAll);
+        // this.seqStudioRunStartEvent.watch((error, result) => {
+        //   if (error) {
+        //     console.log(error)
+        //     return
+        //   }
+        //
+        //   this.allEvents.push(result)
+        //   this.setState({ allEvents: this.allEvents })
+        // })
 
-        this.seqStudioRunStartEvent.watch((error, result) => {
-          console.log("SOMETHING");
+        this.seqStudioEventAll.watch((error, result) => {
           if (error) {
             console.log(error)
             return
           }
 
-          console.log(result);
-          this.allEvents.push(result);
+          this.allEvents.push(result)
           this.setState({ allEvents: this.allEvents })
-          // this.seqStudioRunStartEvent.stopWatching();
         })
-
-        // this.seqStudioEventAll.watch((error, result) => {
-        //   console.log("SOMETHING");
-        //   if (error) {
-        //     console.log(error)
-        //     return
-        //   }
-        //
-        //   console.log(result);
-        //   this.allEvents.push(result);
-        // })
+      }).catch(error => {
+        alert(error);
       })
-        //
-        // this.seqStudioEventAll = seqStudioInstance.RunStart({starter: accounts[0]},
-        //   {fromBlock: 0, toBlock: 'latest'})
-        //
-        // console.log("fit");
-        // this.seqStudioEventAll.watch((error, result) => {
-        //   console.log("SOMETHING");
-        //   if (error) {
-        //     console.log(error)
-        //     return
-        //   }
-        //
-        //   console.log(result);
-        //   this.allEvents.push(result);
-        // })
-
-      // })
     })
   }
 
   render() {
     let events = []
-    for (let i = 0; i < this.state.allEvents.length; i++) {
-      events.push(<a href="#" className="pure-menu-heading pure-menu-link">{this.state.allEvents[i].args.starter}</a>)
-    }
-    console.log('EVENTS', events)
+    this.state.allEvents.map((event, key) => {
+      events.push(
+        <a href="#" className="pure-menu-link" key={key}>
+          {event.event} - <Moment format="LLL" unix>{event.args.time.toNumber()}</Moment>
+        </a>
+      )
+    })
     return (
       <div>
-        <a href="#">Headasdfklasdl;ksfaklfsdl;fasdkjfsdk;jfsadkl;fsadjklafsdj;fasdlk;fsdlk</a>
+        <span className="pure-menu-heading pure-menu-link">All events</span>
         {events}
       </div>
     )
