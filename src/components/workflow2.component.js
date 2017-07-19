@@ -306,11 +306,10 @@ class Workflow2 extends React.Component {
     // console.log("Workflow2: nodes=", model.getNodes());
     // console.log("Workflow2: links=", model.getLinks());
 
-    this.setStep(5);
-    // this.next();
+    this.setStep(2);
 
-    // model.setLocked(true);
-    // engine.setLocked(true);
+    model.setLocked(true);
+    engine.setLocked(true);
 
     engine.setDiagramModel(model);
 
