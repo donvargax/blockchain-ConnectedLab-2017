@@ -112,7 +112,6 @@ class Workflow2 extends React.Component {
           box.style.margin = 0;
           box.style.opacity = 1;
           box.style.background = color;
-          // box.style.backgroundColor = "#00c0ff";
           // console.log("Finishing up positioning");
         }
       });
@@ -156,7 +155,8 @@ class Workflow2 extends React.Component {
         "<h2>Tx: abcdef<br>" +
         "Previous Tx:123456<br>" +
         "Date: 12/34/56<br>" +
-        "Owner: John Doe<br>";
+        "Owner: John Doe<br>" +
+        "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
       color = this.green;
     } else {
       message += "Status: Waiting to Run";
