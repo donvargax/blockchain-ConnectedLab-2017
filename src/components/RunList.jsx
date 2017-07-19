@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Run from "./Run";
-// import {Moment} from "react-moment";
-// import Run from './Run'
+import Run2 from "./Run2";
+import {Collapse} from "react-collapse";
 
 const RunList = ({ runs, onRunClick }) => {
   let newRuns = []
   runs.map((run, key) => {
     newRuns.push(
-      <Run key={key} {...run} onClick={() => onRunClick(run.event)} />
+      <Collapse key={key} isOpened={true}>
+        <Run2 {...run} onClick={() => onRunClick(run.event)} />
+      </Collapse>
     )
   })
   return (
