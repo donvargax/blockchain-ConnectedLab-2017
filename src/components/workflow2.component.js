@@ -25,8 +25,6 @@ class Step {
     this.portOutput = portOutput;
     this.linkForwards = null;
     this.linkBackwards = null;
-    this.titleElement = document.getElementsByClassName('title')
-    this.status = null;
   }
 
   setInProgress() {
@@ -68,8 +66,6 @@ class Workflow2 extends React.Component {
 
     this.steps = [];
 
-    this.isInitialized = false;
-
     Popup.registerPlugin('popover', function (content, target) {
       console.log("Creating popover");
 
@@ -100,6 +96,7 @@ class Workflow2 extends React.Component {
           box.style.left = (btnOffsetLeft + (target.offsetWidth / 2) - (box.offsetWidth / 2)) + 'px';
           box.style.top = 500;
           box.style.left = 500;
+          // box.style.width = 50%;
           box.style.margin = 0;
           box.style.opacity = 1;
           console.log("Finishing up positioning");
@@ -113,12 +110,12 @@ class Workflow2 extends React.Component {
   createNode(options) {
     const {name, color, x, y} = options;
     var node = new SRD.DefaultNodeModel(name, color);
-    // node.setLocked();
     node.x = x;
     node.y = y;
     node.addListener({
       selectionChanged: (node, isSelected) => {
         if (isSelected) {
+          console.log("Workflow2: node id=", node.getID());
           this.displayDetailedInformation(node);
         }
       }
@@ -132,13 +129,26 @@ class Workflow2 extends React.Component {
     console.log(node.isInProgress);
     if (node.isInProgress) {
       message += "Status: In progress"
+      message +=
+        "<h2>Tx:<br>" +
+        "Date:<br>" +
+        "Owner:<br>";
+    } else if (node.isComplete) {
+      message +=
+        "<h2>Tx: abc123<br>" +
+        "Date: 12/34/56<br>" +
+        "Owner: John Doe<br>";
+    } else {
+      message += "Status: Waiting to Run";
+      message +=
+        "<h2>Tx:<br>" +
+        "Date:<br>" +
+        "Owner:<br>";
     }
-    message += "<h2>Tx: blah blah blah<br>" +
-      "Date: blah blah<br>" +
-      "Owner: blah blah<br>";
+
 
     message += "</h2>";
-    Popup.plugins().popover(message, document.getElementById('foo'));
+    Popup.plugins().popover(message, document.getElementById('popup-placeholder'));
   }
 
   createPort(node, options) {
@@ -194,14 +204,23 @@ class Workflow2 extends React.Component {
   }
 
   render() {
-    const {engine, model} = this;
+    console.log("Workflow2: Running render()");
 
-    // this.engine.clearRepaintEntities();
+    const {engine, model} = this;
 
     // this.engine = new SRD.DiagramEngine();
     // this.engine.registerNodeFactory(new SRD.DefaultNodeFactory());
     // this.engine.registerLinkFactory(new SRD.DefaultLinkFactory());
     // this.model = new SRD.DiagramModel();
+
+    // const originalKeys = [];
+    // for (let k in this.model.getNodes()) {
+    //   if (this.model.getNodes().hasOwnProperty(k)) {
+    //     originalKeys.push(k);
+    //     // this.model.removeNode(k)
+    //   }
+    // }
+    // console.log("Workflow2: original keys=", originalKeys);
 
     const step1 = this.createStep("Instrument", 100, 100);
     const step2 = this.createStep("Upload File", 300, 100);
@@ -209,23 +228,39 @@ class Workflow2 extends React.Component {
     const step4 = this.createStep("Generate Report", 700, 100);
     const step5 = this.createStep("Email Report", 900, 100);
 
+    // console.log("Workflow2: new keys=", this.model.getNodes())
+    // console.log("Clearing out old nodes");
+    // if (originalKeys.length) {
+    //   for (let k in this.model.getNodes()) {
+    //     if (this.model.getNodes().hasOwnProperty(k)) {
+    //       if (!(originalKeys.contains(k))) {
+    //         this.model.removeNode(k);
+    //         console.log("Workflow2: removing node ", k)
+    //       }
+    //     }
+    //   }
+    // }
+
     this.linkSteps(step1, step2);
     this.linkSteps(step2, step3);
     this.linkSteps(step3, step4);
     this.linkSteps(step4, step5);
 
+    console.log("Workflow2: nodes=", model.getNodes());
+    console.log("Workflow2: links=", model.getLinks());
+
     step1.setComplete();
     step2.setInProgress();
     // this.next();
 
-    // model.setLocked(true);
-    // engine.setLocked(true);
+    model.setLocked(true);
+    engine.setLocked(true);
 
     engine.setDiagramModel(model);
 
     // Render the canvas
     return (
-      <div id="foo">
+      <div id="popup-placeholder">
         <Popup
           className="mm-popup"
           btnClass="mm-popup__btn"

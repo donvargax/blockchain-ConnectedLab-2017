@@ -52,17 +52,20 @@
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "bignumber.js": "^4.0.2",
+    "d3": "^4.10.0",
     "dotenv": "^2.0.0",
     "moment": "^2.18.1",
     "react": "^15.4.2",
+    "react-d3-graph": "0.0.2",
     "react-dom": "^15.4.2",
     "react-js-diagrams": "^3.1.3",
+    "react-moment": "^0.6.0",
     "react-popover": "^0.4.14",
     "react-popup": "^0.8.0",
-    "storm-react-diagrams": "^2.4.9",
-    "react-moment": "^0.6.0",
     "react-sidebar": "^2.3.2",
-    "react-svg-buttons": "^0.3.1"
+    "react-svg-buttons": "^0.3.1",
+    "react-vis-force": "^0.3.1",
+    "storm-react-diagrams": "^2.4.9"
   },
   "scripts": {
     "start": "node scripts/start.js",
