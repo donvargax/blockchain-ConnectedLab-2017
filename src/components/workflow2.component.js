@@ -151,11 +151,32 @@ class Workflow2 extends React.Component {
       color = this.blue;
     } else if (node.isComplete) {
       message += "Status: Completed";
-      message +=
-        "<h2>Tx: abcdef<br>" +
-        "Previous Tx:123456<br>" +
-        "Date: 12/34/56<br>" +
-        "Owner: John Doe<br>";
+      message += "<h2>";
+
+      // let tx = "0x63862d4feae72df83b644459b28b07d1a5e9146ea512befcad74eacbc90333ff";
+      let tx = "0x63862d...bc90333ff";
+      let current = "";
+      let previous = "";
+      if (node.name === 'Instrument') {
+        current = tx + "-1";
+      } else if (node.name === 'Upload File') {
+        current = tx + "-2";
+        previous = tx + "-1";
+      } else if (node.name === 'Analyze Results') {
+        current = tx + "-3";
+        previous = tx + "-2";
+      } else if (node.name === 'Generate Report') {
+        current = tx + "-4";
+        previous = tx + "-3";
+      } else if (node.name === 'Email Report') {
+        current = tx + "-5";
+        previous = tx + "-4";
+      }
+      message += "Tx: " + current + "<br>";
+      message += "Previous Tx: " + previous + "<br>";
+      message += "Date: 07/20/2017<br>";
+      message += "Owner: Hardeep<br>";
+
       if (node.name === 'Upload File') {
         // message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
         message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
