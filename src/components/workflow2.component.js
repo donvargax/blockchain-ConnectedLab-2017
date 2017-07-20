@@ -44,6 +44,7 @@ class Step {
     }
     this.node.color = this.blue;
     this.node.isInProgress = true;
+    this.node.isComplete = false;
   }
 
   setComplete() {
@@ -154,7 +155,7 @@ class Workflow2 extends React.Component {
       message += "<h2>";
 
       // let tx = "0x63862d4feae72df83b644459b28b07d1a5e9146ea512befcad74eacbc90333ff";
-      let tx = "0x63862d...bc90333ff";
+      let tx = "0x6386...0333ff";
       let current = "";
       let previous = "";
       if (node.name === 'Instrument') {
@@ -179,9 +180,10 @@ class Workflow2 extends React.Component {
 
       if (node.name === 'Upload File') {
         // message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
-        message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
+        https://ipfs.io/ipfs/QmWPPnFXiHNtKbLc4Rmjwgi625WLiALZjH3C41mkEWQp8f
+          message += "File: <a target='_blank' href='https://ipfs.io/ipfs/QmWPPnFXiHNtKbLc4Rmjwgi625WLiALZjH3C41mkEWQp8f'>Secure File</a><br>";
       } else if (node.name === 'Generate Report') {
-        message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmaGyLeV5XgA76TVVrB75RevRbCkAm3RXg4aescVJcBUje'>Secure File</a><br>";
+        message += "File: <a target='_blank' href='https://ipfs.io/ipfs/QmaGyLeV5XgA76TVVrB75RevRbCkAm3RXg4aescVJcBUje'>Secure File</a><br>";
       }
       color = this.green;
     } else {
@@ -362,29 +364,6 @@ class Workflow2 extends React.Component {
     )
   }
 
-  // next() {
-  //   for (let i=0; i<this.steps.length; i++) {
-  //     console.log("Checking step ", i);
-  //     const step = this.steps[i];
-  //     if (step.node.isInProgress) {
-  //       console.log("Found active step, completing and starting next");
-  //       step.setComplete();
-  //       if (i+1 < this.steps.length) {
-  //         this.steps[i+1].setInProgress();
-  //       }
-  //       break;
-  //     } else if (step.node.isComplete) {
-  //       // keep searching for the latest step
-  //       console.log("Found completed step");
-  //     } else {
-  //       // not started, start this node
-  //       console.log("Found latest step, setting in progress");
-  //       step.setInProgress();
-  //       console.log(step.node);
-  //       break;
-  //     }
-  //   }
-  // }
 }
 
 export default Workflow2;
