@@ -156,10 +156,10 @@ class Workflow2 extends React.Component {
         "Previous Tx:123456<br>" +
         "Date: 12/34/56<br>" +
         "Owner: John Doe<br>";
-      if (node.name.props.name === 'Upload File') {
+      if (node.name === 'Upload File') {
         // message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
         message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ/cat.jpg'>Secure File</a><br>";
-      } else if (node.name.props.name === 'Generate Report') {
+      } else if (node.name === 'Generate Report') {
         message += "File: <a target='_blank' href='http://localhost:8080/ipfs/QmaGyLeV5XgA76TVVrB75RevRbCkAm3RXg4aescVJcBUje'>Secure File</a><br>";
       }
       color = this.green;

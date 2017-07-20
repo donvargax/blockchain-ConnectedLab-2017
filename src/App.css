@@ -2,6 +2,8 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 @import "~storm-react-diagrams/dist/style.css";
 @import "./css/popup.css";
+@import "https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css";
+
 
 body,
 .pure-g [class*=pure-u] {
