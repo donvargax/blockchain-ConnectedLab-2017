@@ -57,8 +57,10 @@
     "bignumber.js": "^4.0.2",
     "d3": "^4.10.0",
     "dotenv": "^2.0.0",
+    "material-expansion-panel": "^1.0.0",
     "moment": "^2.18.1",
     "prop-types": "^15.5.10",
+    "pui-react-collapse": "^8.3.1",
     "react": "^15.4.2",
     "react-collapse": "^4.0.2",
     "react-collapsible": "^1.4.0",
@@ -76,7 +78,8 @@
     "storm-react-diagrams": "^2.4.9"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "dev": "NODE_ENV=development node scripts/start.js",
+    "start": "NODE_ENV=production node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },

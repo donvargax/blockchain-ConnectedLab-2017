@@ -11,6 +11,7 @@ import WebApi from "./utils/WebApi"
 import VisibleRunList from "./containers/VisibleRunList";
 import EventSimulator from "./components/EventSimulator";
 import {addEventToRun} from "./actions";
+import {finishRun} from "./actions/index";
 
 class App extends Component {
 
@@ -42,6 +43,7 @@ class App extends Component {
           }
           props.dispatch(addEventToRun(this.runs, result))
           if (result.event === "TriggerReportGeneration") {
+            props.dispatch(finishRun({id: this.runs, status: 'finished'}))
             this.runs++
           }
           // } else {
