@@ -13,24 +13,24 @@ contract SeqStudioNew {
     injectionId = _injectionId;
     fileIds = _fileIds;
 
-    SampleFilesAvailable(deviceId, injectionId, status, fileIds);
+    SampleFilesAvailable(deviceId, injectionId, status, fileIds, now);
   }
   function analyze(string _fileIds) {
     fileIds = _fileIds;
 
-    TriggerAnalysis(fileIds);
+    TriggerAnalysis(fileIds, now);
   }
 
   function generateReport(string _deviceId) {
 
     deviceId = _deviceId;
-    TriggerReportGeneration(deviceId);
+    TriggerReportGeneration(deviceId, now);
   }
   function getFileIds() returns (string) {
     return fileIds;
   }
 
-  event TriggerAnalysis(string fileIds);
-  event TriggerReportGeneration(string deviceId);
-  event SampleFilesAvailable(string deviceId, string injectionId, string status, string fileIds);
+  event TriggerAnalysis(string fileIds, uint256 time);
+  event TriggerReportGeneration(string deviceId, uint256 time);
+  event SampleFilesAvailable(string deviceId, string injectionId, string status, string fileIds, uint256 time);
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
 // import * as RJD from "react-js-diagrams/dist/main";
-import * as SRD from "storm-react-diagrams/dist/main";
+import SRD from "storm-react-diagrams";
 // import '../test.scss';
 
 import ReactDom from 'react-dom';
@@ -260,6 +260,11 @@ class Workflow2 extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    console.log("WORKFLOW MOUNTED, SETTING STEP TO 4")
+    this.setStep(1)
+  }
+
   render() {
     console.log("Workflow2: Running render()");
 
@@ -306,7 +311,8 @@ class Workflow2 extends React.Component {
     // console.log("Workflow2: nodes=", model.getNodes());
     // console.log("Workflow2: links=", model.getLinks());
 
-    this.setStep(2);
+    let { events } = this.props;
+    this.setStep(events.length);
 
     model.setLocked(true);
     engine.setLocked(true);
